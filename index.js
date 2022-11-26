@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const PORT = 3000 || env.process.PORT
+const PORT = process.env.PORT || 3000
 const format = require('date-format')
 app.get("/api/v1/facebook", (req, res) => {
     const instaSocial = {
