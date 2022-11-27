@@ -2,6 +2,13 @@ const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 3000
 const format = require('date-format')
+
+//swagger docs related
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.get("/api/v1/facebook", (req, res) => {
     const instaSocial = {
         username: "puneetvermafacebook",

@@ -12,9 +12,14 @@
   "dependencies": {
     "date-format": "^4.0.14",
     "express": "^4.18.2",
-    "parse": "^3.5.0"
+    "parse": "^3.5.0",
+    "swagger-ui-express": "^4.6.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }
