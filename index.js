@@ -7,6 +7,11 @@ const format = require('date-format')
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
+
+//file upload
+const fileUpload = require('express-fileupload');
+app.use(express.json());
+app.use(fileUpload());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/api/v1/facebook", (req, res) => {
@@ -35,6 +40,17 @@ app.get("/api/v1/instagram", (req, res) => {
         date: format.asString("dd[MM] - hh:mm:ss", new Date())
     }
     res.status(200).json(instaSocial);
+});
+app.post("/api/v1/imageupload", function(req, res) {
+    const file = req.files.file;
+    let path = __dirname + "/images/" + Date.now() + ".jpg"
+    file.mv(path, (err) => {
+        if(err){
+            console.log(err)
+            return res.send(false);
+        }
+        res.send(true);
+    })
 });
 app.get("/api/v1/:token", (req, res) => {
     res.status(200).json({param: req.params.token});

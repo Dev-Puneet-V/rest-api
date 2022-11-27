@@ -2,15 +2,39 @@ openapi: 3.0.0
 info:
   title: Social App
   description: Our first Social app
-  version: 1.0.0.1
+  version: 1.0.0.2
+  contact:
+    email: puneetverma951761@gmail.com
+    url: "https://mean-fairies-production.up.railway.app"
 servers:
-  - url: https://mean-fairies-production.up.railway.app/api/v1/
+  - url: "{protocol}://localhost:3000/api/{version}"
     description: localhost version of our app
-  - url: https://mean-fairies-production.up.railway.app/api/v1
-    description: this is just a simple demo app
+    variables:
+      version:
+        default: v1
+        enum:
+          - v1
+          - v2
+      protocol:
+        default: http
+        enum:
+          - http
+          - https
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer
 paths:
   /instagram:
     get:
+      tags:
+        - Object
       summary: returns username, followers and follows
       responses:
         '200': # status code
@@ -26,8 +50,15 @@ paths:
                     type: string
                   follows:
                     type: string
+                  
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
   /linkedin:
     get:
+      tags:
+        - Object
       summary: returns username, followers and follows
       responses:
         '200': # status code
@@ -43,8 +74,14 @@ paths:
                     type: string
                   follows:
                     type: 
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
   /facebook:
     get:
+      tags:
+        - Object
       summary: returns username, followers and follows
       responses:
         '200': # status code
@@ -60,11 +97,38 @@ paths:
                     type: string
                   follows:
                     type: string
+        '400':
+            description: Bad request
+        '500':
+          description: Internal server error
+  /imageupload:
+    post:
+      tags:
+        - String
+      summary: upload user image
+      parameters:
+        - in: header
+          name: auth
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: File uploaded
   /{token}:
     get:
+      tags:
+        - Object
       summary: returns whatever is there in parameters
       parameters:
         - name: token
+          required: true
           default: 5
           in: path
           schema:
@@ -79,5 +143,9 @@ paths:
                 properties:
                   params:
                     type: string
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
 
 
